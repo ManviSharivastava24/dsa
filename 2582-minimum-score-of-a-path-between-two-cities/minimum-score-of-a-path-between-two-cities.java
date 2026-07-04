@@ -1,33 +1,44 @@
 class Solution {
     public int minScore(int n, int[][] roads) {
 
-        List<int[]>[] graph = new ArrayList[n + 1];
-        for (int i = 1; i <= n; i++) {
-            graph[i] = new ArrayList<>();
+        // Adjacency List
+        ArrayList<ArrayList<int[]>> adj = new ArrayList<>();
+
+        for (int i = 0; i <= n; i++) {
+            adj.add(new ArrayList<>());
         }
 
+        // Build graph
         for (int[] road : roads) {
-            graph[road[0]].add(new int[]{road[1], road[2]});
-            graph[road[1]].add(new int[]{road[0], road[2]});
+            int u = road[0];
+            int v = road[1];
+            int wt = road[2];
+
+            adj.get(u).add(new int[]{v, wt});
+            adj.get(v).add(new int[]{u, wt});
         }
 
         Queue<Integer> q = new LinkedList<>();
-        boolean[] visited = new boolean[n + 1];
+        boolean[] vis = new boolean[n + 1];
 
         q.offer(1);
-        visited[1] = true;
+        vis[1] = true;
 
         int ans = Integer.MAX_VALUE;
 
         while (!q.isEmpty()) {
             int node = q.poll();
 
-            for (int[] edge : graph[node]) {
-                ans = Math.min(ans, edge[1]);
+            for (int[] it : adj.get(node)) {
 
-                if (!visited[edge[0]]) {
-                    visited[edge[0]] = true;
-                    q.offer(edge[0]);
+                int next = it[0];
+                int wt = it[1];
+
+                ans = Math.min(ans, wt);
+
+                if (!vis[next]) {
+                    vis[next] = true;
+                    q.offer(next);
                 }
             }
         }
