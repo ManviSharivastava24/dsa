@@ -17,13 +17,14 @@ class Solution {
      fault[k]=true;
      while(!q.isEmpty()){
         int curr=q.remove();
-        fault[curr]=true;
-        vis[curr]=true;
+        
+        
         if(adj.get(curr).size()>0){
         for(int i=0;i<adj.get(curr).size();i++){
             if(!vis[adj.get(curr).get(i)]){
                 q.add(adj.get(curr).get(i)) ;
                 vis[adj.get(curr).get(i)]=true;
+                fault[adj.get(curr).get(i)]=true;
             } 
         }
         }
